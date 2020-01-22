@@ -1,0 +1,3 @@
+﻿  main.c
+c:\users\коля\source\repos\11lavbop\11lavbop\main.c(39): warning C4047: инициализация: "int" отличается по уровням косвенного обращения от "char [9]"
+  11lavbop.vcxproj -> C:\Users\Коля\source\repos\11lavbop\Debug\11lavbop.exe
