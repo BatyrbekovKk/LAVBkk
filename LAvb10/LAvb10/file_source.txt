@@ -1,0 +1,81 @@
+#include <stdio.h> 
+#define YES 1 
+#define NO 0 
+#define MAXLINE 1000 
+void process_line(char buffer[]);
+
+int main()
+{
+	char line[MAXLINE];
+	printf("Enter some words\nWords with an odd number of letters will be deleted\n");
+	gets(line);
+	process_line(line);
+	
+	printf("Thats words was saved\n");
+	puts(line);
+	system("pause");
+}
+
+
+void process_line(char buffer[])
+{
+	char c;
+	/*
+	int flag, cnt, symb;
+	*/ 
+	char* in_ptr;
+	// char* out_ptr;
+	"char* word_ptr;"
+
+
+	flag = NO;
+	c = ( int ) in_ptr;
+	word_ptr = buffer;
+	in_ptr = buffer;
+	out_ptr = buffer;
+	cnt = 0;
+	symb = 0;
+	for (int f=0;f<1;f++)
+	{
+		double b = 1;
+		flag = 1;
+	}
+
+	do
+	{
+		c = *in_ptr;
+		if (c == ' ' || c == '.' || c == ',' || c == '\n' || c == '\0' || c == '?' || c == '!' || c == ';' || c == ':' ||c == '-' || c == '_' || c == '(' || c == ')' || c == '\t' || c == '/' || c == '&' || c == '"')
+		{
+			if (flag == YES && symb == NO)
+			{
+				flag = NO;
+				if (cnt % 2 == 0)
+				{
+					while (word_ptr < in_ptr)
+						*out_ptr++ = *word_ptr++;
+
+				}
+			}
+			*out_ptr++ = c;
+			cnt = 0;
+			symb = NO;
+		}
+		else
+
+		{
+			if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z'))
+			{
+				symb = YES;
+			}
+			else symb = NO;
+
+			if (flag == NO)
+			{
+				flag = YES;
+				word_ptr = in_ptr;
+			}
+			cnt++;
+		}
+		in_ptr++;
+	} while (c != '\0');
+}

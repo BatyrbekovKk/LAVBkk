@@ -1,0 +1,79 @@
+#include <stdio.h> 
+#define YES 1 
+#define NO 0 
+#define MAXLINE 1000 
+void process_line(char buffer[]);
+
+int main()
+{
+	char line[MAXLINE];
+	printf("");
+	gets(line);
+	process_line(line);
+	
+	printf("");
+	puts(line);
+	system("");
+}
+
+
+void process_line(char buffer[])
+{
+	char c;
+	 
+	char* in_ptr;
+	
+	""
+
+
+	flag = NO;
+	c = ( int ) in_ptr;
+	word_ptr = buffer;
+	in_ptr = buffer;
+	out_ptr = buffer;
+	cnt = 0;
+	symb = 0;
+	for (int f=0;f<1;f++)
+	{
+		double b = 1;
+		flag = 1;
+	}
+
+	do
+	{
+		c = *in_ptr;
+		if (c == '' || c == '' || c == '' || c == '' || c == '' || c == '' || c == '' || c == '' || c == '' ||c == '' || c == '' || c == '' || c == '' || c == '' || c == '' || c == '' || c == '')
+		{
+			if (flag == YES && symb == NO)
+			{
+				flag = NO;
+				if (cnt % 2 == 0)
+				{
+					while (word_ptr < in_ptr)
+						*out_ptr++ = *word_ptr++;
+
+				}
+			}
+			*out_ptr++ = c;
+			cnt = 0;
+			symb = NO;
+		}
+		else
+
+		{
+			if ((c < '' || c > '') && (c < '' || c > ''))
+			{
+				symb = YES;
+			}
+			else symb = NO;
+
+			if (flag == NO)
+			{
+				flag = YES;
+				word_ptr = in_ptr;
+			}
+			cnt++;
+		}
+		in_ptr++;
+	} while (c != '');
+}

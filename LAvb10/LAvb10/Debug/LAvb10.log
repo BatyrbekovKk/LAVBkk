@@ -1,0 +1,3 @@
+﻿  main.c
+c:\users\коля\source\repos\lavb10\lavb10\main.c(315): warning C4101: temp: неиспользованная локальная переменная
+  LAvb10.vcxproj -> C:\Users\Коля\source\repos\LAvb10\Debug\LAvb10.exe
