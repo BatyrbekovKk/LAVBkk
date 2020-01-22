@@ -4,16 +4,16 @@
 #include <string.h>
 #include <locale.h>
 
-FILE* fl_source;  //Исходный файл
-FILE* fl_corrected; //Файл без переносов и комментариев
+FILE* fl_source;  //РСЃС…РѕРґРЅС‹Р№ С„Р°Р№Р»
+FILE* fl_corrected; //Р¤Р°Р№Р» Р±РµР· РїРµСЂРµРЅРѕСЃРѕРІ Рё РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ
 
-int storage_counter = 7;  //Количество возможных спецификаторов и модификаторов
+int storage_counter = 7;  //РљРѕР»РёС‡РµСЃС‚РІРѕ РІРѕР·РјРѕР¶РЅС‹С… СЃРїРµС†РёС„РёРєР°С‚РѕСЂРѕРІ Рё РјРѕРґРёС„РёРєР°С‚РѕСЂРѕРІ
 int type_counter = 9;
 int composite_type_counter = 3;
-char** storage_spec_modif;      //Объявление двумерных массивов для возможных спецификаторов и модификаторов
+char** storage_spec_modif;      //РћР±СЉСЏРІР»РµРЅРёРµ РґРІСѓРјРµСЂРЅС‹С… РјР°СЃСЃРёРІРѕРІ РґР»СЏ РІРѕР·РјРѕР¶РЅС‹С… СЃРїРµС†РёС„РёРєР°С‚РѕСЂРѕРІ Рё РјРѕРґРёС„РёРєР°С‚РѕСЂРѕРІ
 char** type_spec_modif;
 char** composite_type;
-int function_counter = 0; //Кол-во функций
+int function_counter = 0; //РљРѕР»-РІРѕ С„СѓРЅРєС†РёР№
 
 struct FUNCTIONS {
 	int var_counter;
@@ -22,9 +22,9 @@ struct FUNCTIONS {
 	char** identificators;
 } *functions;
 
-//Подготовка массивов известных типов
+//РџРѕРґРіРѕС‚РѕРІРєР° РјР°СЃСЃРёРІРѕРІ РёР·РІРµСЃС‚РЅС‹С… С‚РёРїРѕРІ
 int setTypes() {
-	storage_spec_modif = (char**)calloc(storage_counter, sizeof(char*));  //спецификаторы хранения (auto, static, register, extern) и модификаторы хранения (const, volatile, restrict)	
+	storage_spec_modif = (char**)calloc(storage_counter, sizeof(char*));  //СЃРїРµС†РёС„РёРєР°С‚РѕСЂС‹ С…СЂР°РЅРµРЅРёСЏ (auto, static, register, extern) Рё РјРѕРґРёС„РёРєР°С‚РѕСЂС‹ С…СЂР°РЅРµРЅРёСЏ (const, volatile, restrict)	
 	for (int i = 0; i < storage_counter; i++)
 		storage_spec_modif[i] = (char*)calloc(10, sizeof(char));
 	strcpy(storage_spec_modif[0], "auto");
@@ -35,7 +35,7 @@ int setTypes() {
 	strcpy(storage_spec_modif[5], "volatile");
 	strcpy(storage_spec_modif[6], "restrict");
 
-	type_spec_modif = (char**)calloc(type_counter, sizeof(char*));  //модификаторы и спецификаторы типа
+	type_spec_modif = (char**)calloc(type_counter, sizeof(char*));  //РјРѕРґРёС„РёРєР°С‚РѕСЂС‹ Рё СЃРїРµС†РёС„РёРєР°С‚РѕСЂС‹ С‚РёРїР°
 	for (int i = 0; i < type_counter; i++)
 		type_spec_modif[i] = (char*)calloc(10, sizeof(char));
 	strcpy(type_spec_modif[0], "int");
@@ -48,7 +48,7 @@ int setTypes() {
 	strcpy(type_spec_modif[7], "short");
 	strcpy(type_spec_modif[8], "void");
 
-	composite_type = (char**)calloc(composite_type_counter, sizeof(char*));  //составные типы
+	composite_type = (char**)calloc(composite_type_counter, sizeof(char*));  //СЃРѕСЃС‚Р°РІРЅС‹Рµ С‚РёРїС‹
 	for (int i = 0; i < composite_type_counter; i++)
 		composite_type[i] = (char*)calloc(10, sizeof(char));
 	strcpy(composite_type[0], "struct");
@@ -58,21 +58,21 @@ int setTypes() {
 	return 0;
 }
 
-//Функция сравнения текущего слова с возможными спецификаторами и модификаторами
+//Р¤СѓРЅРєС†РёСЏ СЃСЂР°РІРЅРµРЅРёСЏ С‚РµРєСѓС‰РµРіРѕ СЃР»РѕРІР° СЃ РІРѕР·РјРѕР¶РЅС‹РјРё СЃРїРµС†РёС„РёРєР°С‚РѕСЂР°РјРё Рё РјРѕРґРёС„РёРєР°С‚РѕСЂР°РјРё
 int typeCheck(char* buf) {
-	for (int i = 0; i < storage_counter; i++) {  //Ищем спецификаторы хранения
+	for (int i = 0; i < storage_counter; i++) {  //РС‰РµРј СЃРїРµС†РёС„РёРєР°С‚РѕСЂС‹ С…СЂР°РЅРµРЅРёСЏ
 		if (strcmp(storage_spec_modif[i], buf) == 0) {
 			return 1;
 		}
 	}
 
-	for (int i = 0; i < type_counter; i++) {   //Ищем модификаторы и спецификаторы типа
+	for (int i = 0; i < type_counter; i++) {   //РС‰РµРј РјРѕРґРёС„РёРєР°С‚РѕСЂС‹ Рё СЃРїРµС†РёС„РёРєР°С‚РѕСЂС‹ С‚РёРїР°
 		if (strcmp(type_spec_modif[i], buf) == 0) {
 			return 2;
 		}
 	}
 
-	for (int i = 0; i < composite_type_counter; i++) {  //Ищем составные типы
+	for (int i = 0; i < composite_type_counter; i++) {  //РС‰РµРј СЃРѕСЃС‚Р°РІРЅС‹Рµ С‚РёРїС‹
 		if (strcmp(composite_type[i], buf) == 0) {
 			return 3;
 		}
@@ -81,7 +81,7 @@ int typeCheck(char* buf) {
 	return 0;
 }
 
-//Удаление комментариев и переносов на другую строку, запись typedef
+//РЈРґР°Р»РµРЅРёРµ РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ Рё РїРµСЂРµРЅРѕСЃРѕРІ РЅР° РґСЂСѓРіСѓСЋ СЃС‚СЂРѕРєСѓ, Р·Р°РїРёСЃСЊ typedef
 int fileProcess() {
 	char c, buffer[1000] = { 0 };
 	int i = 0, state;
@@ -155,9 +155,9 @@ int fileProcess() {
 		}
 		else if (c == ' ' || c == '\n' || c == '\t') {
 			buffer[i] = '\0';
-			if (strcmp(buffer, "typedef") == 0) {    //Если идёт typedef
+			if (strcmp(buffer, "typedef") == 0) {    //Р•СЃР»Рё РёРґС‘С‚ typedef
 				fputc(c, fl_corrected);
-				for (i = 0; (c = getc(fl_source)) != ' ' && c != '\t'; i++) {   //Считываем переименованный тип
+				for (i = 0; (c = getc(fl_source)) != ' ' && c != '\t'; i++) {   //РЎС‡РёС‚С‹РІР°РµРј РїРµСЂРµРёРјРµРЅРѕРІР°РЅРЅС‹Р№ С‚РёРї
 					buffer[i] = c;
 					fputc(c, fl_corrected);
 				}
@@ -166,7 +166,7 @@ int fileProcess() {
 				state = typeCheck(buffer);
 				i = 0;
 				while (typeCheck(buffer)) {
-					for (i = 0; (c = getc(fl_source)) != ' ' && c != '\t' && c != ';'; i++) {   //Считываем переименованный тип далее, если есть
+					for (i = 0; (c = getc(fl_source)) != ' ' && c != '\t' && c != ';'; i++) {   //РЎС‡РёС‚С‹РІР°РµРј РїРµСЂРµРёРјРµРЅРѕРІР°РЅРЅС‹Р№ С‚РёРї РґР°Р»РµРµ, РµСЃР»Рё РµСЃС‚СЊ
 						buffer[i] = c;
 						fputc(c, fl_corrected);
 					}
@@ -207,7 +207,7 @@ int fileProcess() {
 	return 0;
 }
 
-//Запись переменных в структуру
+//Р—Р°РїРёСЃСЊ РїРµСЂРµРјРµРЅРЅС‹С… РІ СЃС‚СЂСѓРєС‚СѓСЂСѓ
 int varWrite(char* buf) {
 	int state;
 	int flag_type = 0;
@@ -220,19 +220,19 @@ int varWrite(char* buf) {
 		position = 0;
 		while (*buf == ' ' || *buf == '\t' || *buf == '\n')
 			buf++;
-		while (*buf != ' ' && *buf != '\t' && *buf != '*' && *buf != '[' && *buf != ',' && *buf != '=' && *buf != '\0')   //Запись лексемы
+		while (*buf != ' ' && *buf != '\t' && *buf != '*' && *buf != '[' && *buf != ',' && *buf != '=' && *buf != '\0')   //Р—Р°РїРёСЃСЊ Р»РµРєСЃРµРјС‹
 			temp[position++] = *buf++;
 		temp[position] = '\0';
-		if (!strcmp(temp, "typedef"))   //Если это typedef, то нам не подходит
+		if (!strcmp(temp, "typedef"))   //Р•СЃР»Рё СЌС‚Рѕ typedef, С‚Рѕ РЅР°Рј РЅРµ РїРѕРґС…РѕРґРёС‚
 			return 1;
 		if (*buf == ',' && position == 0) {
 			buf++;
 			continue;
 		}
-		if (state = typeCheck(temp)) {   //Если это один из известных типов
+		if (state = typeCheck(temp)) {   //Р•СЃР»Рё СЌС‚Рѕ РѕРґРёРЅ РёР· РёР·РІРµСЃС‚РЅС‹С… С‚РёРїРѕРІ
 			strcat(type_buf, temp);
 			strcat(type_buf, " ");
-			if (state == 3) {        //Если это struct, enum или union, то считываем после этого её название в temp
+			if (state == 3) {        //Р•СЃР»Рё СЌС‚Рѕ struct, enum РёР»Рё union, С‚Рѕ СЃС‡РёС‚С‹РІР°РµРј РїРѕСЃР»Рµ СЌС‚РѕРіРѕ РµС‘ РЅР°Р·РІР°РЅРёРµ РІ temp
 				while (*buf == ' ' || *buf == '\t')
 					buf++;
 				position = 0;
@@ -247,10 +247,10 @@ int varWrite(char* buf) {
 			continue;
 		}
 
-		if (!flag_type)   //Если мы не обнаружили объявления переменной, то выходим из цикла (строка нам не подходит)
+		if (!flag_type)   //Р•СЃР»Рё РјС‹ РЅРµ РѕР±РЅР°СЂСѓР¶РёР»Рё РѕР±СЉСЏРІР»РµРЅРёСЏ РїРµСЂРµРјРµРЅРЅРѕР№, С‚Рѕ РІС‹С…РѕРґРёРј РёР· С†РёРєР»Р° (СЃС‚СЂРѕРєР° РЅР°Рј РЅРµ РїРѕРґС…РѕРґРёС‚)
 			return 0;
 
-		else if (*buf == '[' && position == 0) {    //Если '[' стоит отдельно от идентификатора
+		else if (*buf == '[' && position == 0) {    //Р•СЃР»Рё '[' СЃС‚РѕРёС‚ РѕС‚РґРµР»СЊРЅРѕ РѕС‚ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂР°
 			strcat(func->identificators[var_counter - 1], "[]");
 			while (*buf != ']')
 				* buf++;
@@ -266,9 +266,9 @@ int varWrite(char* buf) {
 			}
 		}
 
-		else if (*buf == '*') {   //Если это указатель, то записываем все звёздочки в массив zvezda
+		else if (*buf == '*') {   //Р•СЃР»Рё СЌС‚Рѕ СѓРєР°Р·Р°С‚РµР»СЊ, С‚Рѕ Р·Р°РїРёСЃС‹РІР°РµРј РІСЃРµ Р·РІС‘Р·РґРѕС‡РєРё РІ РјР°СЃСЃРёРІ zvezda
 			position = 0;
-			while (*buf == '*' || *buf == ' ' || *buf == '\t') {  //Записываем все звёздочки в temp
+			while (*buf == '*' || *buf == ' ' || *buf == '\t') {  //Р—Р°РїРёСЃС‹РІР°РµРј РІСЃРµ Р·РІС‘Р·РґРѕС‡РєРё РІ temp
 				if (*buf == '*')
 					zvezda[position++] = *buf;
 				*buf++;
@@ -276,16 +276,16 @@ int varWrite(char* buf) {
 			zvezda[position] = '\0';
 		}
 
-		else if (!state) {     //Если это идентификатор, то записываем всё в структуру
+		else if (!state) {     //Р•СЃР»Рё СЌС‚Рѕ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ, С‚Рѕ Р·Р°РїРёСЃС‹РІР°РµРј РІСЃС‘ РІ СЃС‚СЂСѓРєС‚СѓСЂСѓ
 			func->types = (char**)realloc(func->types, (var_counter + 1) * sizeof(char*));
-			func->types[var_counter] = (char*)calloc(strlen(type_buf) + strlen(zvezda) + 1, sizeof(char));    //Выделяем место под тип + звёздочки
+			func->types[var_counter] = (char*)calloc(strlen(type_buf) + strlen(zvezda) + 1, sizeof(char));    //Р’С‹РґРµР»СЏРµРј РјРµСЃС‚Рѕ РїРѕРґ С‚РёРї + Р·РІС‘Р·РґРѕС‡РєРё
 
 			strcpy(func->types[var_counter], type_buf);
 			strcat(func->types[var_counter], zvezda);
 			zvezda[0] = '\0';
 
 			func->identificators = (char**)realloc(func->identificators, (var_counter + 1) * sizeof(char*));
-			func->identificators[var_counter] = (char*)calloc(strlen(temp) + 3, sizeof(char));      //Выделяем место под идентификатор + "[]"
+			func->identificators[var_counter] = (char*)calloc(strlen(temp) + 3, sizeof(char));      //Р’С‹РґРµР»СЏРµРј РјРµСЃС‚Рѕ РїРѕРґ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ + "[]"
 
 			strcat(func->identificators[var_counter], temp);
 
@@ -306,7 +306,7 @@ int varWrite(char* buf) {
 	return 1;
 }
 
-//Функция поиска входа в функцию
+//Р¤СѓРЅРєС†РёСЏ РїРѕРёСЃРєР° РІС…РѕРґР° РІ С„СѓРЅРєС†РёСЋ
 int funcSearch() {
 	int flag_function = 0;
 	int flag_skobka1 = 0;
@@ -315,7 +315,7 @@ int funcSearch() {
 	char c, buf[100], func_name[100], func_var[100], temp[100];
 	char* ptr = buf;
 
-	while ((c = getc(fl_corrected)) != EOF) {      //нахождение входа в функцию
+	while ((c = getc(fl_corrected)) != EOF) {      //РЅР°С…РѕР¶РґРµРЅРёРµ РІС…РѕРґР° РІ С„СѓРЅРєС†РёСЋ
 		if (c == ';' || c == '>') {
 			while ((c = getc(fl_corrected)) == ' ' || c == '\t' || c == '\n');
 			position = 0;
@@ -348,11 +348,11 @@ int funcSearch() {
 		position++;
 	}
 
-	if (c == EOF && !flag_function)      //если не нашли вход, то возвращаем ноль
+	if (c == EOF && !flag_function)      //РµСЃР»Рё РЅРµ РЅР°С€Р»Рё РІС…РѕРґ, С‚Рѕ РІРѕР·РІСЂР°С‰Р°РµРј РЅРѕР»СЊ
 		return 0;
 
-	function_counter++;                //запись в структуру имени функции
-	functions = (struct FUNCTIONS*)realloc(functions, function_counter * sizeof(struct FUNCTIONS));  //Создание новой структуры
+	function_counter++;                //Р·Р°РїРёСЃСЊ РІ СЃС‚СЂСѓРєС‚СѓСЂСѓ РёРјРµРЅРё С„СѓРЅРєС†РёРё
+	functions = (struct FUNCTIONS*)realloc(functions, function_counter * sizeof(struct FUNCTIONS));  //РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕР№ СЃС‚СЂСѓРєС‚СѓСЂС‹
 	(functions + function_counter - 1)->types = (char**)calloc(1, sizeof(char*));
 	(functions + function_counter - 1)->identificators = (char**)calloc(1, sizeof(char*));
 	(functions + function_counter - 1)->var_counter = 0;
@@ -371,7 +371,7 @@ int funcSearch() {
 	ptr++;
 	(functions + function_counter - 1)->function = (char*)calloc(position + 1, sizeof(char));
 	strcpy((functions + function_counter - 1)->function, func_name);
-	while (*ptr != ')') {       //запись в массив переменных из параметров функции
+	while (*ptr != ')') {       //Р·Р°РїРёСЃСЊ РІ РјР°СЃСЃРёРІ РїРµСЂРµРјРµРЅРЅС‹С… РёР· РїР°СЂР°РјРµС‚СЂРѕРІ С„СѓРЅРєС†РёРё
 		position = 0;
 		while (*ptr == ' ' || *ptr == '\t')
 			ptr++;
@@ -386,9 +386,9 @@ int funcSearch() {
 	return 1;
 }
 
-//Освобождение памяти
+//РћСЃРІРѕР±РѕР¶РґРµРЅРёРµ РїР°РјСЏС‚Рё
 int freeMemory() {
-	for (int i = 0; i < function_counter; i++) {      //Освобождение памяти в структуре
+	for (int i = 0; i < function_counter; i++) {      //РћСЃРІРѕР±РѕР¶РґРµРЅРёРµ РїР°РјСЏС‚Рё РІ СЃС‚СЂСѓРєС‚СѓСЂРµ
 		for (int j = 0; j < (functions + i)->var_counter; j++) {
 			free((functions + i)->types[j]);
 			free((functions + i)->identificators[j]);
@@ -399,17 +399,17 @@ int freeMemory() {
 	}
 	free(functions);
 
-	for (int i = 0; i < storage_counter; i++) {  //Освобождение памяти спецификаторов хранения
+	for (int i = 0; i < storage_counter; i++) {  //РћСЃРІРѕР±РѕР¶РґРµРЅРёРµ РїР°РјСЏС‚Рё СЃРїРµС†РёС„РёРєР°С‚РѕСЂРѕРІ С…СЂР°РЅРµРЅРёСЏ
 		free(storage_spec_modif[i]);
 	}
 	free(storage_spec_modif);
 
-	for (int i = 0; i < type_counter; i++) {   //Освобождение памяти спецификаторов и модификаторов типа
+	for (int i = 0; i < type_counter; i++) {   //РћСЃРІРѕР±РѕР¶РґРµРЅРёРµ РїР°РјСЏС‚Рё СЃРїРµС†РёС„РёРєР°С‚РѕСЂРѕРІ Рё РјРѕРґРёС„РёРєР°С‚РѕСЂРѕРІ С‚РёРїР°
 		free(type_spec_modif[i]);
 	}
 	free(type_spec_modif);
 
-	for (int i = 0; i < composite_type_counter; i++) {    //Освобождение памяти составных типов
+	for (int i = 0; i < composite_type_counter; i++) {    //РћСЃРІРѕР±РѕР¶РґРµРЅРёРµ РїР°РјСЏС‚Рё СЃРѕСЃС‚Р°РІРЅС‹С… С‚РёРїРѕРІ
 		free(composite_type[i]);
 	}
 	free(composite_type);
@@ -417,9 +417,9 @@ int freeMemory() {
 	return 0;
 }
 
-//Вывод функций и переменных из структуры
+//Р’С‹РІРѕРґ С„СѓРЅРєС†РёР№ Рё РїРµСЂРµРјРµРЅРЅС‹С… РёР· СЃС‚СЂСѓРєС‚СѓСЂС‹
 int printVar() {
-	printf("Функции                   Типы переменных                     Идентификаторы                      \n");   //Вывод переменных на экран
+	printf("Р¤СѓРЅРєС†РёРё                   РўРёРїС‹ РїРµСЂРµРјРµРЅРЅС‹С…                     РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂС‹                      \n");   //Р’С‹РІРѕРґ РїРµСЂРµРјРµРЅРЅС‹С… РЅР° СЌРєСЂР°РЅ
 	printf("-----------------------------------------------------------------------------------------------\n");
 	for (int i = 0; i < function_counter; i++) {
 		printf("%-25s ", (functions + i)->function);
@@ -438,7 +438,7 @@ int printVar() {
 	return 0;
 }
 
-//Главная функция
+//Р“Р»Р°РІРЅР°СЏ С„СѓРЅРєС†РёСЏ
 int main() {
 	char c, buf[1000];
 	int position;
@@ -446,22 +446,22 @@ int main() {
 
 	setlocale(LC_ALL, "");
 
-	setTypes();  //Подготовка массивов известных типов
+	setTypes();  //РџРѕРґРіРѕС‚РѕРІРєР° РјР°СЃСЃРёРІРѕРІ РёР·РІРµСЃС‚РЅС‹С… С‚РёРїРѕРІ
 
-	fileProcess();     //Очистка комментариев и переносов в файле (подготовка файла)
+	fileProcess();     //РћС‡РёСЃС‚РєР° РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ Рё РїРµСЂРµРЅРѕСЃРѕРІ РІ С„Р°Р№Р»Рµ (РїРѕРґРіРѕС‚РѕРІРєР° С„Р°Р№Р»Р°)
 
-	fl_corrected = fopen("file_corrected.txt", "rt");     //Открытие подготовленного файла
+	fl_corrected = fopen("file_corrected.txt", "rt");     //РћС‚РєСЂС‹С‚РёРµ РїРѕРґРіРѕС‚РѕРІР»РµРЅРЅРѕРіРѕ С„Р°Р№Р»Р°
 
-	while (1) {          //Главный цикл
-		if (!funcSearch())   //Если не нашли функцию (т.е. их больше нет в файле), то выходим из цикла
+	while (1) {          //Р“Р»Р°РІРЅС‹Р№ С†РёРєР»
+		if (!funcSearch())   //Р•СЃР»Рё РЅРµ РЅР°С€Р»Рё С„СѓРЅРєС†РёСЋ (С‚.Рµ. РёС… Р±РѕР»СЊС€Рµ РЅРµС‚ РІ С„Р°Р№Р»Рµ), С‚Рѕ РІС‹С…РѕРґРёРј РёР· С†РёРєР»Р°
 			break;
 		Block_cnt = 1;
 		position = 0;
-		while ((c = getc(fl_corrected)) == ' ' || c == '\t' || c == '\n');    //Очистка от табов и пробелов
-		while (c != '}' && c != EOF) {        //Запись в буфер до ';'
-			if (c == '{') {       //Если нашли блок в функции, то это struct, enum или union, поэтому пропускаем всё, что находится в блоке (нас это не интересует)
+		while ((c = getc(fl_corrected)) == ' ' || c == '\t' || c == '\n');    //РћС‡РёСЃС‚РєР° РѕС‚ С‚Р°Р±РѕРІ Рё РїСЂРѕР±РµР»РѕРІ
+		while (c != '}' && c != EOF) {        //Р—Р°РїРёСЃСЊ РІ Р±СѓС„РµСЂ РґРѕ ';'
+			if (c == '{') {       //Р•СЃР»Рё РЅР°С€Р»Рё Р±Р»РѕРє РІ С„СѓРЅРєС†РёРё, С‚Рѕ СЌС‚Рѕ struct, enum РёР»Рё union, РїРѕСЌС‚РѕРјСѓ РїСЂРѕРїСѓСЃРєР°РµРј РІСЃС‘, С‡С‚Рѕ РЅР°С…РѕРґРёС‚СЃСЏ РІ Р±Р»РѕРєРµ (РЅР°СЃ СЌС‚Рѕ РЅРµ РёРЅС‚РµСЂРµСЃСѓРµС‚)
 				Block_cnt++;
-				while (Block_cnt != 1) {   //Пока мы в блоке
+				while (Block_cnt != 1) {   //РџРѕРєР° РјС‹ РІ Р±Р»РѕРєРµ
 					c = getc(fl_corrected);
 					if (c == '{')
 						Block_cnt++;
@@ -473,8 +473,8 @@ int main() {
 			}
 			else if (c == ';') {
 				buf[position] = '\0';
-				if (!varWrite(buf)) {        // Если закончились объявления переменных, то выходим из функции(Было просто varWrite(buf);)
-					while (Block_cnt) {  //Пока мы в блоке
+				if (!varWrite(buf)) {        // Р•СЃР»Рё Р·Р°РєРѕРЅС‡РёР»РёСЃСЊ РѕР±СЉСЏРІР»РµРЅРёСЏ РїРµСЂРµРјРµРЅРЅС‹С…, С‚Рѕ РІС‹С…РѕРґРёРј РёР· С„СѓРЅРєС†РёРё(Р‘С‹Р»Рѕ РїСЂРѕСЃС‚Рѕ varWrite(buf);)
+					while (Block_cnt) {  //РџРѕРєР° РјС‹ РІ Р±Р»РѕРєРµ
 						if (c == '{')
 							Block_cnt++;
 						else if (c == '}')
@@ -493,8 +493,8 @@ int main() {
 		}
 	}
 
-	printVar();    //Вывод переменных, которые мы нашли в коде
-	freeMemory();  //Освобождение всей выделенной памяти в ходе работы программы
+	printVar();    //Р’С‹РІРѕРґ РїРµСЂРµРјРµРЅРЅС‹С…, РєРѕС‚РѕСЂС‹Рµ РјС‹ РЅР°С€Р»Рё РІ РєРѕРґРµ
+	freeMemory();  //РћСЃРІРѕР±РѕР¶РґРµРЅРёРµ РІСЃРµР№ РІС‹РґРµР»РµРЅРЅРѕР№ РїР°РјСЏС‚Рё РІ С…РѕРґРµ СЂР°Р±РѕС‚С‹ РїСЂРѕРіСЂР°РјРјС‹
 	fclose(fl_corrected);
 	system("pause");
 	return 0;
