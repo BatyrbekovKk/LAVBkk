@@ -1,38 +1,38 @@
-#pragma warning(disable : 4996) // чиним fopen
+#pragma warning(disable : 4996) // С‡РёРЅРёРј fopen
 #include <stdio.h> 
 #define MAXLINE 1024  
 int main(void)
-{  // указатели на структуру типа FILE для входной и выходного файлов
+{  // СѓРєР°Р·Р°С‚РµР»Рё РЅР° СЃС‚СЂСѓРєС‚СѓСЂСѓ С‚РёРїР° FILE РґР»СЏ РІС…РѕРґРЅРѕР№ Рё РІС‹С…РѕРґРЅРѕРіРѕ С„Р°Р№Р»РѕРІ
 	int N;
 	int a = 0;
 	int b;
 	printf("N - quantity of symbol in line\n");
 	printf("enter N please\n");
 	scanf_s("%d", &N);
-	char line[MAXLINE]; // текущая строка  
+	char line[MAXLINE]; // С‚РµРєСѓС‰Р°СЏ СЃС‚СЂРѕРєР°  
 	char *ptr;
-	// открыть файл для чтения  
-	FILE *fpin = fopen("C:\\Users\\Коля\\source\\repos\\lavb8\\lavb8\test", "r");
+	// РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» РґР»СЏ С‡С‚РµРЅРёСЏ  
+	FILE *fpin = fopen("C:\\Users\\РљРѕР»СЏ\\source\\repos\\lavb8\\lavb8\test", "r");
 	if (fpin == NULL)
 	{
-		printf("error: file not found\n"); // если файл с данными отсутствует, выводим ошибку
+		printf("error: file not found\n"); // РµСЃР»Рё С„Р°Р№Р» СЃ РґР°РЅРЅС‹РјРё РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚, РІС‹РІРѕРґРёРј РѕС€РёР±РєСѓ
 		return;
 	}
-	// открыть файл для записи
-	FILE* fpout = fopen("C:\\Users\\Коля\\source\\repos\\lavb8\\lavb8\result", "a"); // создаем файл с результатом
+	// РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» РґР»СЏ Р·Р°РїРёСЃРё
+	FILE* fpout = fopen("C:\\Users\\РљРѕР»СЏ\\source\\repos\\lavb8\\lavb8\result", "a"); // СЃРѕР·РґР°РµРј С„Р°Р№Р» СЃ СЂРµР·СѓР»СЊС‚Р°С‚РѕРј
 
 	{
-		while (!feof(fpin)) // цикл до конца файла  
-		{   // чтение строки   
+		while (!feof(fpin)) // С†РёРєР» РґРѕ РєРѕРЅС†Р° С„Р°Р№Р»Р°  
+		{   // С‡С‚РµРЅРёРµ СЃС‚СЂРѕРєРё   
 			ptr = fgets(line, MAXLINE, fpin);
 			if (ptr == NULL)
-				break; // файл исчерпан
+				break; // С„Р°Р№Р» РёСЃС‡РµСЂРїР°РЅ
 			while (*ptr != '\0')
 			{
 				if (a == N)
-				{     // достигнута максимальная длина строки  
+				{     // РґРѕСЃС‚РёРіРЅСѓС‚Р° РјР°РєСЃРёРјР°Р»СЊРЅР°СЏ РґР»РёРЅР° СЃС‚СЂРѕРєРё  
 					b = *ptr;
-					*ptr = '\n';// ставим символ "конец строки" 
+					*ptr = '\n';// СЃС‚Р°РІРёРј СЃРёРјРІРѕР» "РєРѕРЅРµС† СЃС‚СЂРѕРєРё" 
 					a = 0;
 					fprintf(line[*ptr], fpout);
 					ptr == b;
@@ -42,12 +42,12 @@ int main(void)
 				{
 					a++;
 				}
-				ptr++; // продвигаем указатель по строке
+				ptr++; // РїСЂРѕРґРІРёРіР°РµРј СѓРєР°Р·Р°С‚РµР»СЊ РїРѕ СЃС‚СЂРѕРєРµ
 			}
-			fputs(line, fpout); // запись строки  
+			fputs(line, fpout); // Р·Р°РїРёСЃСЊ СЃС‚СЂРѕРєРё  
 		}
-		fclose(fpin); // закрыть входной файл  
-		fclose(fpout); // закрыть выходной файл 
+		fclose(fpin); // Р·Р°РєСЂС‹С‚СЊ РІС…РѕРґРЅРѕР№ С„Р°Р№Р»  
+		fclose(fpout); // Р·Р°РєСЂС‹С‚СЊ РІС‹С…РѕРґРЅРѕР№ С„Р°Р№Р» 
 		return 0;
 	}
 }
