@@ -1,0 +1,7 @@
+﻿  main.c
+c:\users\коля\source\repos\lavb8\lavb8\main.c(37): warning C4047: функция: "FILE *const " отличается по уровням косвенного обращения от "char"
+c:\users\коля\source\repos\lavb8\lavb8\main.c(37): warning C4024: fprintf: различные типы для формального и фактического параметров 1
+c:\users\коля\source\repos\lavb8\lavb8\main.c(37): warning C4133: функция: несовместимые типы - из "FILE *" в "const char *const "
+c:\users\коля\source\repos\lavb8\lavb8\main.c(38): warning C4047: ==: "char *" отличается по уровням косвенного обращения от "int"
+c:\users\коля\source\repos\lavb8\lavb8\main.c(38): warning C4553: "==": результат выражения не используется; вы хотели использовать "="?
+  lavb8.vcxproj -> C:\Users\Коля\source\repos\lavb9\Debug\lavb8.exe
